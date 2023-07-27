@@ -9,10 +9,12 @@ import Foundation
 
 struct APIManager {
     let session = URLSession.shared
-    let urlString = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=202a30725"
+    let urlStringForBoxOffice = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=202a30725"
+    let urlStringForMovie = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=20230724"
     
-    func fetchData(completion: @escaping (BoxOffice?) -> ()) {
-        guard let correctUrl = URL(string: urlString) else {
+    
+    func fetchData(_ url: String, completion: @escaping (BoxOffice?) -> ()) {
+        guard let correctUrl = URL(string: url) else {
             print("Wrong URL")
             return
         }
