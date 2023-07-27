@@ -11,7 +11,7 @@ struct APIManager {
     let session = URLSession.shared
     let urlString = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=202a30725"
     
-    func fetchData() {
+    func fetchData(completion: @escaping (BoxOffice?) -> ()) {
         guard let correctUrl = URL(string: urlString) else {
             print("Wrong URL")
             return
@@ -19,7 +19,7 @@ struct APIManager {
         
         let request = URLRequest(url: correctUrl)
         
-        session.dataTask(with: request) { data, response, error in
+        let dataTask = session.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 print("error: \(String(describing: error))")
                 return
@@ -34,20 +34,21 @@ struct APIManager {
                 print("Server Error: \(httpResponse.statusCode)")
                 return
             }
-        
+            
             guard let safeData = data else {
                 print("None of Data")
                 return
             }
             
-            if safeData == data {
-                do {
-                    let decoder = JSONDecoder()
-                    let decodedData = try decoder.decode(BoxOffice.self, from: safeData)
-                } catch {
-                    print ("Decoding Error")
-                }
+            do {
+                let decoder = JSONDecoder()
+                let decodedData = try decoder.decode(BoxOffice.self, from: safeData)
+                completion(decodedData)
+            } catch {
+                print ("Decoding Error")
             }
-        }.resume()
+        }
+        
+        dataTask.resume()
     }
 }
