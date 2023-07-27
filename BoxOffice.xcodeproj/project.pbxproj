@@ -116,10 +116,18 @@
 			path = DTO;
 			sourceTree = "<group>";
 		};
-		D06DF27C2A6E73430074F9EF /* Resources */ = {
+		D00857C82A72D8F9007F1B92 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
 				5D4FAAA02A6E88D2001FA74A /* box_office_sample.json */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
+		D06DF27C2A6E73430074F9EF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D00857C82A72D8F9007F1B92 /* JSON */,
 				63DF20F72970E1A1005DF7D1 /* Assets.xcassets */,
 				63DF20FC2970E1A1005DF7D1 /* Info.plist */,
 			);
