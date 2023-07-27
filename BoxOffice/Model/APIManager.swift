@@ -9,7 +9,8 @@ import Foundation
 
 struct APIManager {
     let session = URLSession.shared
-    
+    let decoder = JSONDecoder()
+
     func fetchData(_ service: Service, completion: @escaping (Data?) -> ()) {
         guard let url = URL(string: service.rawValue) else {
             print("Wrong URL")
@@ -38,14 +39,24 @@ struct APIManager {
             }
 
             completion(safeData)
+            
+            switch service {
+            case.dailyBoxOffice:
+                if let decodedData: BoxOffice = self.decodeJSON(service: service, data: safeData) {
+                    print(decodedData)
+                }
+            case.movieDetailInfo:
+                if let decodedData: Movie = self.decodeJSON(service: service, data: safeData) {
+                    print(decodedData)
+                }
+            }
         }
         
         dataTask.resume()
     }
     
-    func decodeJSON<T: Decodable>(data: Data) -> T? {
+    func decodeJSON<T: Decodable>(service: Service, data: Data) -> T? {
         do {
-            let decoder = JSONDecoder()
             let decodedData = try decoder.decode(T.self, from: data)
             print("decodedData: \(decodedData)")
             return decodedData
