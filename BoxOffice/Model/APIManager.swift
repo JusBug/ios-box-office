@@ -8,12 +8,13 @@
 import Foundation
 
 struct APIManager {
-    let session: URLSessionProtocol
+    let session = URLSession.shared
+    
     let urlStringForBoxOffice = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=202a30725"
     let urlStringForMovie = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=20230724"
     
     
-    func fetchData(_ url: String, completion: @escaping (BoxOffice?) -> ()) {
+    func fetchData(_ url: String, completion: @escaping (Data?) -> ()) {
         guard let correctUrl = URL(string: url) else {
             print("Wrong URL")
             return
@@ -41,16 +42,21 @@ struct APIManager {
                 print("None of Data")
                 return
             }
-            
-            do {
-                let decoder = JSONDecoder()
-                let decodedData = try decoder.decode(BoxOffice.self, from: safeData)
-                completion(decodedData)
-            } catch {
-                print ("Decoding Error")
-            }
+
+            completion(safeData)
         }
         
         dataTask.resume()
+    }
+    
+    func decodeJSON<T: Decodable>(data: Data) -> T? {
+        do {
+            let decoder = JSONDecoder()
+            let decodedData = try decoder.decode(T.self, from: data)
+            return decodedData
+        } catch {
+            print ("Decoding Error")
+            return nil
+        }
     }
 }
