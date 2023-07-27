@@ -10,3 +10,5 @@ import Foundation
 protocol URLSessionProtocol {
     func dataTask(with url: String, completion: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask
 }
+
+extension URLSession: URLSessionProtocol {}
