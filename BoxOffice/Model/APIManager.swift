@@ -11,7 +11,7 @@ struct APIManager {
     let session = URLSession.shared
     
     func fetchData(service: Service, completion: @escaping (Data?) -> Void) {
-        guard let url = URL(string: service.rawValue) else {
+        guard let url = service.url else {
             print("Wrong URL")
             return
         }
