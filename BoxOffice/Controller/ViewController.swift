@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     @IBOutlet weak var CollectionView: UICollectionView!
+    var apiManager = APIManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +26,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as? CustomCell else {
             return UICollectionViewCell()
         }
-            
-        cell.rankLabel.text = "123"
-        cell.oldAndNewLabel.text = "New"
-        cell.movieName.text = "미션 임파서블"
-        cell.auditNumber.text = "12345"
         
         return cell
     }

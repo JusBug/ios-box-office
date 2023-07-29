@@ -63,8 +63,8 @@
             <color key="backgroundColor" systemColor="systemGreenColor"/>
             <size key="customSize" width="258" height="50"/>
             <connections>
-                <outlet property="auditNumber" destination="an2-ue-tqu" id="Mnw-KE-cmC"/>
-                <outlet property="movieName" destination="tAt-7T-m06" id="yQz-zX-Yzw"/>
+                <outlet property="auditNumberLabel" destination="an2-ue-tqu" id="1QI-gW-pZI"/>
+                <outlet property="movieNameLabel" destination="tAt-7T-m06" id="R1Q-FA-Zts"/>
                 <outlet property="oldAndNewLabel" destination="zEk-nG-S2F" id="ZzU-ph-8AZ"/>
                 <outlet property="rankLabel" destination="ARd-4y-gXH" id="VTT-QH-elq"/>
             </connections>
