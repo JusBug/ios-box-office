@@ -8,6 +8,14 @@
 import UIKit
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    @IBOutlet weak var CollectionView: UICollectionView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.CollectionView.dataSource = self
+        self.CollectionView.delegate = self
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
     }
@@ -19,13 +27,5 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         return cell
     }
-    
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-
-
 }
 
