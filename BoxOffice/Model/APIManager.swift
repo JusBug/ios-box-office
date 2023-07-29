@@ -41,11 +41,11 @@ struct APIManager {
             
             switch service {
             case .dailyBoxOffice:
-                if let decodedData: BoxOffice = self.decodeJSON(service: service, data: safeData) {
+                if let decodedData: BoxOffice = self.decodeJSON(data: safeData) {
                     print(decodedData)
                 }
             case .movieDetailInfo:
-                if let decodedData: Movie = self.decodeJSON(service: service, data: safeData) {
+                if let decodedData: Movie = self.decodeJSON(data: safeData) {
                     print(decodedData)
                 }
             }
@@ -54,7 +54,7 @@ struct APIManager {
         dataTask.resume()
     }
     
-    func decodeJSON<T: Decodable>(service: Service, data: Data) -> T? {
+    func decodeJSON<T: Decodable>(data: Data) -> T? {
         do {
             let decoder = JSONDecoder()
             let decodedData = try decoder.decode(T.self, from: data)
