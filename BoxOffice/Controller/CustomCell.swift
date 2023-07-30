@@ -54,3 +54,19 @@ class CustomCell: UICollectionViewCell {
         auditNumberLabel.text = "오늘 \(formattedAudiCnt) / 총 \(formattedAudiAcc)"
     }
 }
+
+extension CustomCell {
+    enum Arrow: String {
+        case upArrow = "▲"
+        case downArrow = "▼"
+        
+        var color: UIColor {
+            switch self {
+            case .upArrow:
+                return .red
+            case .downArrow:
+                return .blue
+            }
+        }
+    }
+}
