@@ -26,7 +26,7 @@ class CustomCell: UICollectionViewCell {
     func configureText(with dailyBoxOffice: dailyBoxOffice) {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-
+        
         guard let audiCnt = Int(dailyBoxOffice.audiCnt),
               let formattedAudiCnt = numberFormatter.string(from: NSNumber(value: audiCnt)) else { return }
         
@@ -42,18 +42,20 @@ class CustomCell: UICollectionViewCell {
         if dailyBoxOffice.rankInten == "0" {
             oldAndNewLabel.text = "-"
         } else if let rankInten = Int(dailyBoxOffice.rankInten) {
-            let arrow = rankInten > 0 ? "▲" : "▼"
-            let rankIntenString = "\(arrow)\(abs(rankInten))"
-            let attributedString = NSMutableAttributedString(string: rankIntenString)
-            let range = (rankIntenString as NSString).range(of: arrow)
-            attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
-            oldAndNewLabel.attributedText = attributedString
+            if let arrow = Arrow(rawValue: rankInten > 0 ? "▲" : "▼") {
+                let rankIntenString = "\(arrow.rawValue)\(abs(rankInten))"
+                let attributedString = NSMutableAttributedString(string: rankIntenString)
+                let range = (rankIntenString as NSString).range(of: arrow.rawValue)
+                attributedString.addAttribute(.foregroundColor, value: arrow.color, range: range)
+                oldAndNewLabel.attributedText = attributedString
+            }
         }
-
+        
         movieNameLabel.text = dailyBoxOffice.movieName
         auditNumberLabel.text = "오늘 \(formattedAudiCnt) / 총 \(formattedAudiAcc)"
     }
 }
+
 
 extension CustomCell {
     enum Arrow: String {

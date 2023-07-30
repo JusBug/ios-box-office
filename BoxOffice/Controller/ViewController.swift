@@ -58,7 +58,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                     self?.boxOffice = boxOfficeData
                     self?.updateCollectionView()
                 } catch {
-                    print("디코딩 오류: \(error)")
+                    print("decoding Error: \(error)")
                 }
             }
         }

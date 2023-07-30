@@ -58,7 +58,6 @@ struct APIManager {
         do {
             let decoder = JSONDecoder()
             let decodedData = try decoder.decode(T.self, from: data)
-            print("decodedData: \(decodedData)")
             return decodedData
         } catch {
             print ("Decoding Error")
