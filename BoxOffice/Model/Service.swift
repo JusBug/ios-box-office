@@ -6,8 +6,8 @@
 //
 
 enum Service: String {
-    case dailyBoxOffice = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=202a30725"
-    case movieDetailInfo = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=20230724"
+    case dailyBoxOffice = "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=20230727"
+    case movieDetailInfo = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=9edeb739e275f3013ffb896c2ff41cfe&targetDt=20230727"
     
     var type: Any {
         switch self {

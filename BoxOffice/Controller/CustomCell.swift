@@ -20,8 +20,22 @@ class CustomCell: UICollectionViewCell {
     
     func configureLabel(with dailyBoxOffice: dailyBoxOffice) {
         rankLabel.text = dailyBoxOffice.rank
-        oldAndNewLabel.text = dailyBoxOffice.rankOldAndNew
+        
+        if dailyBoxOffice.rankOldAndNew == "NEW" {
+            oldAndNewLabel.textColor = .red
+            oldAndNewLabel.text = "신작"
+        }
+        
+        if dailyBoxOffice.rankInten == "0" {
+            oldAndNewLabel.text = "-"
+        } else if Int(dailyBoxOffice.rankInten) ?? 0 > 0 {
+            oldAndNewLabel.text = "🔺\(dailyBoxOffice.rankInten)"
+        } else {
+            oldAndNewLabel.text = "🔻\(dailyBoxOffice.rankInten)"
+        }
+        
+        //oldAndNewLabel.text = dailyBoxOffice.rankOldAndNe
         movieNameLabel.text = dailyBoxOffice.movieName
-        auditNumberLabel.text = dailyBoxOffice.audiAcc
+        auditNumberLabel.text = "오늘 \(dailyBoxOffice.audiCnt) / 총 \(dailyBoxOffice.audiAcc)"
     }
 }
