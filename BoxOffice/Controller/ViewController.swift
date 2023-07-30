@@ -10,12 +10,14 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     @IBOutlet weak var CollectionView: UICollectionView!
     var apiManager = APIManager()
+    var boxOffice: BoxOffice?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.CollectionView.dataSource = self
         self.CollectionView.delegate = self
         registerXib()
+        callAPIManager()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -27,6 +29,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return UICollectionViewCell()
         }
         
+        if let boxOfficeData = boxOffice, indexPath.item < boxOfficeData.boxOfficeResult.dailyBoxOfficeList.count {
+            let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
+            cell.configureLabel(with: dailyBoxOffice)
+        }
+        
         return cell
     }
     
@@ -34,5 +41,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let nibName = UINib(nibName: "CustomCell", bundle: nil)
         CollectionView.register(nibName, forCellWithReuseIdentifier: "customCell")
     }
+    
+    private func updateCollectionView() {
+        DispatchQueue.main.async {
+            self.CollectionView.reloadData()
+        }
+    }
+    
+    func callAPIManager() {
+        apiManager.fetchData(service: .dailyBoxOffice) { [weak self] data in
+            if let data = data {
+                let decoder = JSONDecoder()
+                do {
+                    let boxOfficeData = try decoder.decode(BoxOffice.self, from: data)
+                    self?.boxOffice = boxOfficeData
+                    self?.updateCollectionView()
+                } catch {
+                    print("디코딩 오류: \(error)")
+                }
+            }
+        }
+    }
 }
+
 
