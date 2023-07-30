@@ -31,7 +31,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         if let boxOfficeData = boxOffice, indexPath.item < boxOfficeData.boxOfficeResult.dailyBoxOfficeList.count {
             let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
-            cell.configureLabel(with: dailyBoxOffice)
+            cell.configureFont()
+            cell.configureText(with: dailyBoxOffice)
         }
         
         return cell

@@ -17,10 +17,23 @@ class CustomCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    func configureFont() {
+        rankLabel.font = UIFont.systemFont(ofSize: 30)
+        oldAndNewLabel.font = UIFont.systemFont(ofSize: 10)
+        auditNumberLabel.font = UIFont.systemFont(ofSize: 15)
+    }
     
-    func configureLabel(with dailyBoxOffice: dailyBoxOffice) {
-        rankLabel.text = dailyBoxOffice.rank
+    func configureText(with dailyBoxOffice: dailyBoxOffice) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
         
+        guard let audiCnt = Int(dailyBoxOffice.audiCnt),
+              let formattedAudiCnt = numberFormatter.string(from: NSNumber(value: audiCnt)) else { return }
+        
+        guard let audiAcc = Int(dailyBoxOffice.audiAcc),
+              let formattedAudiAcc = numberFormatter.string(from: NSNumber(value: audiAcc)) else { return }
+        
+        rankLabel.text = dailyBoxOffice.rank
         if dailyBoxOffice.rankOldAndNew == "NEW" {
             oldAndNewLabel.textColor = .red
             oldAndNewLabel.text = "신작"
@@ -34,8 +47,7 @@ class CustomCell: UICollectionViewCell {
             oldAndNewLabel.text = "🔻\(dailyBoxOffice.rankInten)"
         }
         
-        //oldAndNewLabel.text = dailyBoxOffice.rankOldAndNe
         movieNameLabel.text = dailyBoxOffice.movieName
-        auditNumberLabel.text = "오늘 \(dailyBoxOffice.audiCnt) / 총 \(dailyBoxOffice.audiAcc)"
+        auditNumberLabel.text = "오늘 \(formattedAudiCnt) / 총 \(formattedAudiAcc)"
     }
 }
