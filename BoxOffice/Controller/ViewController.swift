@@ -17,7 +17,7 @@ final class ViewController: UIViewController {
         self.CollectionView.dataSource = self
         self.CollectionView.delegate = self
         registerXib()
-        callAPIManager(service: .dailyBoxOffice)
+        callAPIManager(.dailyBoxOffice)
         configureViewTitle()
     }
     
@@ -36,13 +36,13 @@ final class ViewController: UIViewController {
         self.navigationItem.title = "the Date"
     }
     
-    private func callAPIManager(service: APIService) {
-        apiManager.fetchData(service: service) { [weak self] result in
+    private func callAPIManager(_ service: APIService) {
+        apiManager.fetchData(service) { [weak self] result in
             
             switch result {
             case .success(let data):
                 let decoder = JSONDecoder()
-                if let boxOfficeData: BoxOffice = decoder.decodeJSON(data: data) {
+                if let boxOfficeData: BoxOffice = decoder.decodeJSON(data) {
                     self?.boxOffice = boxOfficeData
                     self?.updateCollectionView()
                 } else {
