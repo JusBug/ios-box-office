@@ -8,14 +8,10 @@
 import Foundation
 
 extension JSONDecoder {
-    func decodeJSON<T: Decodable>(data: Data) -> T? {
-        do {
-            let decodedData = try self.decode(T.self, from: data)
-            print("decodedData: \(decodedData)")
-            return decodedData
-        } catch {
-            print ("Decoding Error")
-            return nil
-        }
+    func decodeJSON<T: Decodable>(data: Data, modelType: T.Type) throws -> T {
+        
+        let decodedData = try self.decode(T.self, from: data)
+        
+        return decodedData
     }
 }
