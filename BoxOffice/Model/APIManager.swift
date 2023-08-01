@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct APIManager {
-    func fetchData(service: APIService, completion: @escaping (Result<Decodable, Error>) -> Void) {
+struct APIManager<T: Decodable> {
+    func fetchData(service: APIService, completion: @escaping (Result<T, Error>) -> Void) {
         let session = URLSession.shared
         let jsonDecoder = JSONDecoder()
         
@@ -42,15 +42,10 @@ struct APIManager {
                 return
             }
             
-            let decodedData: Decodable
-            
-            switch service {
-            case .dailyBoxOffice:
-                decodedData = try? jsonDecoder.decodeJSON(data: safeData,
-                                                          modelType: BoxOffice.self)
-            case .movieDetailInfo:
-                decodedData = try? jsonDecoder.decodeJSON(data: safeData,
-                                                          modelType: Movie.self)
+            guard let decodedData = try? jsonDecoder.decodeJSON(data: safeData,
+                                                                modelType: T.self)
+            else {
+                return
             }
             
             completion(.success(decodedData))
