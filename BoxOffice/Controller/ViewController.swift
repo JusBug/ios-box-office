@@ -37,8 +37,10 @@ final class ViewController: UIViewController {
     }
     
     func callAPIManager() {
-        apiManager.fetchData(service: .dailyBoxOffice) { [weak self] data in
-            if let data = data {
+        apiManager.fetchData(service: .dailyBoxOffice) { [weak self] result in
+            
+            switch result {
+            case .success(let data):
                 let decoder = JSONDecoder()
                 do {
                     let boxOfficeData = try decoder.decode(BoxOffice.self, from: data)
@@ -47,6 +49,10 @@ final class ViewController: UIViewController {
                 } catch {
                     print("decoding Error: \(error)")
                 }
+            case .failure(let error):
+                print("Error: \(error)")
+            case .none:
+                print("Error")
             }
         }
     }

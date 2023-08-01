@@ -8,11 +8,12 @@
 import Foundation
 
 struct APIManager {
-    let session = URLSession.shared
-    
-    func fetchData(service: Service, completion: @escaping (Data?) -> Void) {
-        guard let url = URL(string: service.rawValue) else {
+    func fetchData(service: APIService, completion: @escaping (Result<Data, Error>?) -> Void) {
+        let session = URLSession.shared
+        
+        guard let url = URL(string: service.url) else {
             print("Wrong URL")
+            completion(.failure(APIError.wrongURL))
             return
         }
         
@@ -22,46 +23,31 @@ struct APIManager {
                 return
             }
             
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Response Error")
-                return
-            }
-            
-            guard (200..<300).contains(httpResponse.statusCode) else {
-                print("Server Error: \(httpResponse.statusCode)")
-                return
-            }
-            
-            guard let safeData = data else {
-                print("None of Data")
-                return
-            }
-            
-            completion(safeData)
-            
-            switch service {
-            case .dailyBoxOffice:
-                if let decodedData: BoxOffice = self.decodeJSON(data: safeData) {
-                    print(decodedData)
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response Error")
+                    completion(.failure(APIError.responseError))
+                    return
                 }
-            case .movieDetailInfo:
-                if let decodedData: Movie = self.decodeJSON(data: safeData) {
-                    print(decodedData)
+                
+                guard (200..<300).contains(httpResponse.statusCode) else {
+                    print("Server Error: \(httpResponse.statusCode)")
+                    completion(.failure(APIError.serverError))
+                    return
                 }
+                
+                guard let safeData = data else {
+                    print("No Data")
+                    completion(.failure(APIError.noData))
+                    return
+                }
+                
+                completion(.success(safeData))
             }
         }
         
         dataTask.resume()
-    }
-    
-    func decodeJSON<T: Decodable>(data: Data) -> T? {
-        do {
-            let decoder = JSONDecoder()
-            let decodedData = try decoder.decode(T.self, from: data)
-            return decodedData
-        } catch {
-            print ("Decoding Error")
-            return nil
-        }
     }
 }
