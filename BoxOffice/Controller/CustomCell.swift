@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomCell: UICollectionViewCell {
+final class CustomCell: UICollectionViewCell {
     @IBOutlet weak var rankLabel: UILabel!
     @IBOutlet weak var oldAndNewLabel: UILabel!
     @IBOutlet weak var movieNameLabel: UILabel!

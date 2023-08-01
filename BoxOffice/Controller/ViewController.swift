@@ -36,7 +36,7 @@ final class ViewController: UIViewController {
         self.navigationItem.title = "the Date"
     }
     
-    func callAPIManager(service: APIService) {
+    private func callAPIManager(service: APIService) {
         apiManager.fetchData(service: service) { [weak self] result in
             
             switch result {
