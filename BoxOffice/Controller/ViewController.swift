@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+final class ViewController: UIViewController {
     @IBOutlet weak var CollectionView: UICollectionView!
     var apiManager = APIManager()
     var boxOffice: BoxOffice?
@@ -18,24 +18,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         self.CollectionView.delegate = self
         registerXib()
         callAPIManager()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return boxOffice?.boxOfficeResult.dailyBoxOfficeList.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as? CustomCell else {
-            return UICollectionViewCell()
-        }
-        
-        if let boxOfficeData = boxOffice, indexPath.item < boxOfficeData.boxOfficeResult.dailyBoxOfficeList.count {
-            let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
-            cell.configureFont()
-            cell.configureText(with: dailyBoxOffice)
-        }
-        
-        return cell
     }
     
     private func registerXib() {
@@ -65,4 +47,28 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
 }
 
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "movieDetailView") else { return }
+        self.navigationController?.pushViewController(pushVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return boxOffice?.boxOfficeResult.dailyBoxOfficeList.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as? CustomCell else {
+            return UICollectionViewCell()
+        }
+        
+        if let boxOfficeData = boxOffice, indexPath.item < boxOfficeData.boxOfficeResult.dailyBoxOfficeList.count {
+            let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
+            cell.configureFont()
+            cell.configureText(with: dailyBoxOffice)
+        }
+        
+        return cell
+    }
+}
 
