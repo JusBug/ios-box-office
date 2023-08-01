@@ -17,7 +17,7 @@ final class ViewController: UIViewController {
         self.CollectionView.dataSource = self
         self.CollectionView.delegate = self
         registerXib()
-        callAPIManager()
+        callAPIManager(service: .dailyBoxOffice)
         configureViewTitle()
     }
     
@@ -36,8 +36,8 @@ final class ViewController: UIViewController {
         self.navigationItem.title = "the Date"
     }
     
-    func callAPIManager() {
-        apiManager.fetchData(service: .dailyBoxOffice) { [weak self] result in
+    func callAPIManager(service: APIService) {
+        apiManager.fetchData(service: service) { [weak self] result in
             
             switch result {
             case .success(let data):
@@ -58,12 +58,7 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "movieDetailView") else { return }
-        self.navigationController?.pushViewController(pushVC, animated: true)
-    }
-    
+extension ViewController: UICollectionViewDataSource {    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return boxOffice?.boxOfficeResult.dailyBoxOfficeList.count ?? 0
     }
@@ -83,3 +78,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 }
 
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "movieDetailView") else { return }
+        self.navigationController?.pushViewController(pushVC, animated: true)
+    }
+}
