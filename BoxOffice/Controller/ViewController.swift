@@ -11,6 +11,7 @@ final class ViewController: UIViewController {
     @IBOutlet weak var CollectionView: UICollectionView!
     var apiManager = APIManager()
     var boxOffice: BoxOffice?
+    var movie: Movie?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,19 +40,29 @@ final class ViewController: UIViewController {
     private func callAPIManager(_ service: APIService) {
         apiManager.fetchData(service) { [weak self] result in
             
-            switch result {
-            case .success(let data):
+            switch (result, service) {
+            case (.success(let data), .dailyBoxOffice):
                 let decoder = JSONDecoder()
-                if let boxOfficeData: BoxOffice = decoder.decodeJSON(data) {
-                    self?.boxOffice = boxOfficeData
+                if let decodedData: BoxOffice = decoder.decodeJSON(data) {
+                    self?.boxOffice = decodedData
                     self?.updateCollectionView()
                 } else {
-                    print("decoding Error")
+                    print("decoding Error for BoxOffice")
                 }
-            case .failure(let error):
+            case (.success(let data), .movieDetailInfo):
+                let decoder = JSONDecoder()
+                if let decodedData: Movie = decoder.decodeJSON(data) {
+                    self?.movie = decodedData
+                    self?.updateCollectionView()
+                } else {
+                    print("decoding Error for Movie")
+                }
+            case (.failure(let error), _) where service == .dailyBoxOffice || service == .movieDetailInfo:
                 print("Error: \(error)")
-            case .none:
-                print("Error")
+            case (.none, _):
+                print("unknown Error")
+            case (.some(.failure(_)), _):
+                print("unknown Error")
             }
         }
     }
