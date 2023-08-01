@@ -42,12 +42,11 @@ final class ViewController: UIViewController {
             switch result {
             case .success(let data):
                 let decoder = JSONDecoder()
-                do {
-                    let boxOfficeData = try decoder.decode(BoxOffice.self, from: data)
+                if let boxOfficeData: BoxOffice = decoder.decodeJSON(data: data) {
                     self?.boxOffice = boxOfficeData
                     self?.updateCollectionView()
-                } catch {
-                    print("decoding Error: \(error)")
+                } else {
+                    print("decoding Error")
                 }
             case .failure(let error):
                 print("Error: \(error)")

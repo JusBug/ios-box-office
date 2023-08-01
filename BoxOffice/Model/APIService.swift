@@ -14,13 +14,12 @@ enum APIService {
     func configureURL() -> URL? {
         let dateFormatter = DateFormatter()
         var components = URLComponents()
+        let targetDate = URLQueryItem(name: "targetDt", value: "20230731")
 
         dateFormatter.dateFormat = "yyyy-mm-dd"
-            
         components.scheme = "https"
         components.host = "www.kobis.or.kr"
         components.path = "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
-        let targetDate = URLQueryItem(name: "targetDt", value: "20230731")
         components.queryItems = [targetDate]
         
         let url = components.url
