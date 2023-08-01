@@ -18,6 +18,7 @@ final class ViewController: UIViewController {
         self.CollectionView.delegate = self
         registerXib()
         callAPIManager()
+        configureViewTitle()
     }
     
     private func registerXib() {
@@ -29,6 +30,10 @@ final class ViewController: UIViewController {
         DispatchQueue.main.async {
             self.CollectionView.reloadData()
         }
+    }
+    
+    private func configureViewTitle() {
+        self.navigationItem.title = "the Date"
     }
     
     func callAPIManager() {
