@@ -10,17 +10,39 @@ import UIKit
 class MainViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var loadingActivityIndicatorView: UIActivityIndicatorView!
     
     private var boxOfficeInfo: BoxOffice?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        toggleShowView(view: collectionView)
+        toggleAnimating(view: loadingActivityIndicatorView)
+    
         updateBoxOfficeInfo()
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+        
+    }
+    
+    private func toggleAnimating(view: UIActivityIndicatorView) {
+        if view.isAnimating == true {
+            view.stopAnimating()
+        } else {
+            view.startAnimating()
+        }
+    }
+    
+    private func toggleShowView(view: UIView) {
+        if view.isHidden == true {
+            view.isHidden = false
+        } else {
+            view.isHidden = true
+        }
     }
     
     private func updateBoxOfficeInfo() {
@@ -40,6 +62,9 @@ class MainViewController: UIViewController {
             }
         }
         group.wait()
+        loadingActivityIndicatorView.stopAnimating()
+        toggleShowView(view: collectionView)
+        toggleShowView(view: loadingActivityIndicatorView)
     }
 }
 
