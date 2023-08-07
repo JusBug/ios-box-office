@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CcU-pL-9Uj">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -58,16 +57,19 @@
                     </view>
                     <navigationItem key="navigationItem" id="83c-0O-bg9">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="rC5-7l-aUk">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="44c-oA-6Tx">
-                                <rect key="frame" x="290" y="5" width="87" height="35"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="44c-oA-6Tx">
+                                <rect key="frame" x="290" y="4.6666666666666679" width="87" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="날짜선택"/>
+                                <connections>
+                                    <action selector="tabCalendarButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1CM-m8-KZI"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="calendarButton" destination="44c-oA-6Tx" id="SJi-Ca-56a"/>
+                        <outlet property="calendarButton" destination="44c-oA-6Tx" id="oEf-0j-Pps"/>
                         <outlet property="collectionView" destination="hJE-o8-6ci" id="tUi-8K-AG4"/>
                         <outlet property="loadingActivityView" destination="Kwk-Hi-AOZ" id="pXB-8v-zht"/>
                     </connections>
@@ -90,6 +92,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xOg-kt-dDo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1842" y="-35"/>
+        </scene>
+        <!--Calendar View Controller-->
+        <scene sceneID="XwV-wW-1zt">
+            <objects>
+                <viewController id="6R8-vT-PUr" customClass="CalendarViewController" customModule="BoxOffice" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fd9-iE-4vg">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="tgw-XA-vco"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p5n-2P-90i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2689" y="-35"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nN2-XB-fib">

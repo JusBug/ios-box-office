@@ -11,10 +11,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loadingActivityView: UIActivityIndicatorView!
     @IBOutlet weak var calendarButton: UIButton!
-    
     var boxOffice: BoxOffice?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLodingView()
@@ -35,8 +33,11 @@ class MainViewController: UIViewController {
         collectionView.delegate = self
     }
     
-    @IBAction private func tabCalendarButton(_ sender: UIButton) {
-        
+    @IBAction func tabCalendarButton(_ sender: Any) {
+        print("버튼 클릭")
+        let calendarVC = CalendarViewController()
+        calendarVC.modalPresentationStyle = .popover
+        self.present(calendarVC, animated: true, completion: nil)
     }
     
     private func initRefresh() {
