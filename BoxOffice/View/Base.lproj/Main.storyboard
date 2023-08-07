@@ -56,8 +56,18 @@
                             <constraint firstItem="hJE-o8-6ci" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WsE-fI-qng"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="83c-0O-bg9"/>
+                    <navigationItem key="navigationItem" id="83c-0O-bg9">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="rC5-7l-aUk">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="44c-oA-6Tx">
+                                <rect key="frame" x="290" y="5" width="87" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="날짜선택"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="calendarButton" destination="44c-oA-6Tx" id="SJi-Ca-56a"/>
                         <outlet property="collectionView" destination="hJE-o8-6ci" id="tUi-8K-AG4"/>
                         <outlet property="loadingActivityView" destination="Kwk-Hi-AOZ" id="pXB-8v-zht"/>
                     </connections>

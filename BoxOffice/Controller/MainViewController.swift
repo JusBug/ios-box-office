@@ -10,7 +10,10 @@ import UIKit
 class MainViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loadingActivityView: UIActivityIndicatorView!
+    @IBOutlet weak var calendarButton: UIButton!
+    
     var boxOffice: BoxOffice?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +33,10 @@ class MainViewController: UIViewController {
     private func assignDataSourceAndDelegate() {
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    @IBAction private func tabCalendarButton(_ sender: UIButton) {
+        
     }
     
     private func initRefresh() {
