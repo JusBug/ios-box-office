@@ -12,17 +12,18 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showCalendarView()
         
+    }
+    
+    private func showCalendarView() {
         // UICalendarView 생성 및 구성
         calendarView = UICalendarView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height))
         calendarView.backgroundColor = UIColor.white
         view.addSubview(calendarView)
     }
-    
-    func showCalendarView() {
-//        UIView.animate(withDuration: 0.3) {
-//            self.calendarView.alpha = 1.0
-//        }
-    }
 }
 
+extension CalendarViewController: UICalendarViewDelegate {
+    
+}
