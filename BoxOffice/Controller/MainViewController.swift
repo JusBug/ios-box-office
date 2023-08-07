@@ -12,6 +12,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var loadingActivityView: UIActivityIndicatorView!
     @IBOutlet weak var calendarButton: UIButton!
     var boxOffice: BoxOffice?
+    var selectedDate: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +35,6 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func tabCalendarButton(_ sender: Any) {
-        print("버튼 클릭")
         let calendarVC = CalendarViewController()
         calendarVC.modalPresentationStyle = .popover
         self.present(calendarVC, animated: true, completion: nil)
@@ -50,11 +50,12 @@ class MainViewController: UIViewController {
     
     private func configureTitle() {
         let dateProvider = DateProvider()
-        guard let yesterday = dateProvider.updateYesterday(.viewTitle) else {
-            return
+        if let yesterday = dateProvider.updateYesterday(.viewTitle) {
+            self.navigationItem.title = "\(yesterday)"
+        } else if let selectedDate = selectedDate {
+            print("\(selectedDate)")
+            self.navigationItem.title = "\(selectedDate)"
         }
-        
-        self.navigationItem.title = "\(yesterday)"
     }
     
     private func registerCustomCell() {
