@@ -15,6 +15,7 @@ struct DateProvider {
         guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else {
             return nil
         }
+        print("provider: \(yesterday)")
         
         dateFormatter.dateFormat = form.rawValue
         

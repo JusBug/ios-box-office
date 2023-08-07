@@ -8,7 +8,6 @@
 import UIKit
 
 class CollectionViewListCell: UICollectionViewListCell {
-    
     @IBOutlet weak var rankNumberLabel: UILabel!
     @IBOutlet weak var rankInfoLabel: UILabel!
     @IBOutlet weak var movieNameLabel: UILabel!

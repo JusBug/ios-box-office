@@ -10,7 +10,7 @@ import UIKit
 class CalendarViewController: UIViewController, UICalendarViewDelegate {
     var calendarView: UICalendarView!
     var selectedDate: Date?
-    
+    weak var delegate: CalendarViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.showCalendarView()
@@ -19,16 +19,15 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate {
     
     private func showCalendarView() {
         // UICalendarView 생성 및 구성
+        let currentDate = Date()
+        guard let pastDate = Calendar.current.date(byAdding: .year,  value: -10, to: currentDate) else {
+            return
+        }
+        selectedDate = currentDate
         calendarView = UICalendarView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height))
         calendarView.backgroundColor = UIColor.white
         calendarView.calendar = .current
-        
-        let currentDate = Date()
-        guard let pastDate = Calendar.current.date(byAdding: .year,  value: -3, to: currentDate) else {
-            return
-        }
         calendarView.availableDateRange = DateInterval(start: pastDate, end: currentDate)
-        
         calendarView.selectionBehavior = UICalendarSelectionSingleDate(delegate: self)
         calendarView.delegate = self
         view.addSubview(calendarView)
@@ -38,8 +37,9 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate {
 extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         if let date = dateComponents?.date {
-            print(date)
-        }else {print("empty date")}
-
+            print("selected: \(date)")
+            delegate?.didSelectDate(date)
+            dismiss(animated: true, completion: nil)
+        } else {print("wrong date")}
     }
 }
