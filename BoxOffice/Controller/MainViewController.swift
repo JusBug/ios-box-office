@@ -53,11 +53,7 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
     private func configureTitle() {
         let dateProvider = DateProvider()
         if let yesterday = dateProvider.updateYesterday(.viewTitle) {
-            print("configure1: \(yesterday)")
             self.navigationItem.title = "\(yesterday)"
-        } else if let selectedDate = selectedDate {
-            print("configure2: \(selectedDate)")
-            self.navigationItem.title = "\(selectedDate)"
         }
     }
     
