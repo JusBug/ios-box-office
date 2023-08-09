@@ -8,17 +8,26 @@
 import Foundation
 
 struct DateProvider {
-    var dateFormatter = DateFormatter()
     
     func updateYesterday(_ form: DateForm) -> String? {
-        let date = Date()
-        guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else {
-            return nil
-        }
+        let yesterday = try! reciveDate(to: -1)
         
+        return modifyDate(with: yesterday, by: form)
+    }
+    
+    func modifyDate(with date: Date,by form: DateForm) -> String {
+        var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = form.rawValue
         
-        return dateFormatter.string(from: yesterday)
+        return dateFormatter.string(from: date)
+    }
+    
+    func reciveDate(to value: Int, from date: Date = Date()) throws -> Date {
+        guard let reciveDate = Calendar.current.date(byAdding: .day, value: value, to: date) else {
+            throw DateProviderError.wrongDate
+        }
+        
+        return reciveDate
     }
 }
 

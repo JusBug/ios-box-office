@@ -8,7 +8,6 @@
 import Foundation
 
 struct URLManager {
-    static var shared = URLManager()
     var selectedDate: Date?
     
     func configureURLSession(key: String, path: String, targetDate: String) -> URL? {
@@ -20,7 +19,7 @@ struct URLManager {
             URLQueryItem(name: "key", value: key),
         ]
         
-        if let targetDate = URLManager.shared.selectedDate {
+        if let targetDate = selectedDate {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyyMMdd"
             let targetDateString = dateFormatter.string(from: targetDate)

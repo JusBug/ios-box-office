@@ -13,3 +13,7 @@ enum APIError: Error {
     case serverError
     case noData
 }
+
+enum DateProviderError: Error {
+    case wrongDate
+}

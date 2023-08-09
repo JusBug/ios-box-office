@@ -58,8 +58,10 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
     }
     
     func didSelectDate(_ date: Date) {
+        var urlManager = URLManager()
+        
         selectedDate = date
-        URLManager.shared.selectedDate = date
+        urlManager.selectedDate = date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         let dateString = dateFormatter.string(from: date)
