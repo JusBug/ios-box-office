@@ -19,14 +19,13 @@ struct URLManager {
             URLQueryItem(name: "key", value: key),
         ]
         
-        if let targetDate = selectedDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyyMMdd"
-            let targetDateString = dateFormatter.string(from: targetDate)
-            urlComponents.queryItems?.append(URLQueryItem(name: "targetDt", value: targetDateString))
-        } else {
-            urlComponents.queryItems?.append(URLQueryItem(name: "targetDt", value: targetDate))
+        var upDateTargetDate: String = targetDate
+        
+        if let selectedDate {
+            upDateTargetDate = DateProvider().modifyDate(with: selectedDate, by: .urlDate)
         }
+        
+        urlComponents.queryItems?.append(URLQueryItem(name: "targetDt", value: upDateTargetDate))
         
         return urlComponents.url
     }
@@ -39,7 +38,7 @@ enum APIService {
     var url: URL? {
         let key = Bundle.main.apiKey
         let urlManager = URLManager()
-        guard let targetDate = DateProvider().updateYesterday(.urlDate) else {
+        guard let targetDate = DateProvider().updateDate(to: -1, by: .urlDate) else {
             return nil
         }
         

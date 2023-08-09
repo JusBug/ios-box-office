@@ -8,22 +8,26 @@
 import Foundation
 
 struct DateProvider {
+    typealias NumberOfDays = Int
     
-    func updateYesterday(_ form: DateForm) -> String? {
-        let yesterday = try! reciveDate(to: -1)
+    func updateDate(with date: Date = Date(), to numberOfDays: NumberOfDays, by form: DateForm) -> String? {
+        let reciveDate = try! reciveDate(to: numberOfDays, from: date) // 추후 수정
         
-        return modifyDate(with: yesterday, by: form)
+        return modifyDate(with: reciveDate, by: form)
     }
     
-    func modifyDate(with date: Date,by form: DateForm) -> String {
+    func modifyDate(with date: Date, by form: DateForm) -> String {
         var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = form.rawValue
+        dateFormatter.dateFormat = form.formet
         
         return dateFormatter.string(from: date)
     }
     
-    func reciveDate(to value: Int, from date: Date = Date()) throws -> Date {
-        guard let reciveDate = Calendar.current.date(byAdding: .day, value: value, to: date) else {
+    private func reciveDate(to numberOfDays: NumberOfDays, from date: Date) throws -> Date {
+        guard let reciveDate = Calendar.current.date(byAdding: .day,
+                                                     value: numberOfDays,
+                                                     to: date)
+        else {
             throw DateProviderError.wrongDate
         }
         
@@ -31,7 +35,16 @@ struct DateProvider {
     }
 }
 
-enum DateForm: String {
-    case urlDate = "YYYYMMdd"
-    case viewTitle = "YYYY-MM-dd"
+enum DateForm {
+    case urlDate
+    case viewTitle
+    
+    var formet: String {
+        switch self {
+        case .urlDate:
+            return "YYYYMMdd"
+        case .viewTitle:
+            return "YYYY-MM-dd"
+        }
+    }
 }

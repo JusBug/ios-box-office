@@ -50,7 +50,7 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
     
     private func configureTitle() {
         let dateProvider = DateProvider()
-        guard let yesterday = dateProvider.updateYesterday(.viewTitle) else {
+        guard let yesterday = dateProvider.updateDate(to: -1, by: .viewTitle) else {
             return
         }
         
