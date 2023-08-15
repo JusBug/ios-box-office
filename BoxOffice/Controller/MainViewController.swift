@@ -116,7 +116,7 @@ extension MainViewController: UICollectionViewDataSource {
 }
 
 extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pushMovieDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieDetailViewController") else { return }
         
         self.navigationController?.pushViewController(pushMovieDetailVC, animated: true)
