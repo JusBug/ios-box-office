@@ -16,8 +16,21 @@ final class MovieViewController: MainViewController {
     @IBOutlet weak var nationLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var actorLabel: UILabel!
+    var movie: Movie?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureLabel()
+    }
+    
+    private func configureLabel() {
+        let movieInfo = movie?.movieInfoResult.movieInfo
+        productionYearLabel.text = movieInfo?.prdtYear
+        openDate.text = movieInfo?.openDate
+        showTimeLabel.text = movieInfo?.showTime
+        watchGradeLabel.text = movieInfo?.audits[0].watchGradeNm
+        nationLabel.text = movieInfo?.nations[0].nationNm
+        genreLabel.text = movieInfo?.genres[0].genreNm
+        actorLabel.text = movieInfo?.actors[0].peopleNm
     }
 }
