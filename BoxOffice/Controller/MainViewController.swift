@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class MainViewController: UIViewController, CalendarViewControllerDelegate {
+protocol testable {
+    func configureMovieCode(to movieCode: String)
+}
+
+final class MainViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loadingActivityView: UIActivityIndicatorView!
     @IBOutlet weak var calendarButton: UIButton!
@@ -18,6 +22,7 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
            changeLayout(newValue: newVal)
         }
     }
+    var delegate: testable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,25 +33,6 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
         configureListLayout()
         configureTitle()
         initRefresh()
-    }
-    
-    private func configureFlowLayout() {
-        let layout = UICollectionViewFlowLayout()
-        collectionView.setCollectionViewLayout(layout, animated: false)
-    }
-    
-    private func configureListLayout() {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-        collectionView.setCollectionViewLayout(layout, animated: false)
-    }
-    
-    private func changeLayout(newValue: Bool) {
-        if newValue == true {
-            configureFlowLayout()
-        } else {
-            configureListLayout()
-        }
     }
     
     @IBAction func tapChangeModeButton(_ sender: Any) {
@@ -75,6 +61,31 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
         present(actionSheet, animated: true, completion: nil)
     }
     
+    @IBAction func tabCalendarButton(_ sender: UIButton) {
+        let calendarVC = CalendarViewController(selectedDate: URLManager.shared.selectedDate, delegate: self)
+        calendarVC.modalPresentationStyle = .popover
+        self.present(calendarVC, animated: true, completion: nil)
+    }
+    
+    private func configureFlowLayout() {
+        let layout = UICollectionViewFlowLayout()
+        collectionView.setCollectionViewLayout(layout, animated: false)
+    }
+    
+    private func configureListLayout() {
+        let configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        collectionView.setCollectionViewLayout(layout, animated: false)
+    }
+    
+    private func changeLayout(newValue: Bool) {
+        if newValue == true {
+            configureFlowLayout()
+        } else {
+            configureListLayout()
+        }
+    }
+    
     private func showLodingView() {
         collectionView.isHidden = true
         loadingActivityView.startAnimating()
@@ -91,12 +102,6 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
         collectionView.delegate = self
     }
     
-    @IBAction func tabCalendarButton(_ sender: UIButton) {
-        let calendarVC = CalendarViewController(selectedDate: URLManager.shared.selectedDate, delegate: self)
-        calendarVC.modalPresentationStyle = .popover
-        self.present(calendarVC, animated: true, completion: nil)
-    }
-    
     private func initRefresh() {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(updateData), for: .valueChanged)
@@ -111,13 +116,6 @@ final class MainViewController: UIViewController, CalendarViewControllerDelegate
         }
         
         self.navigationItem.title = "\(yesterday)"
-    }
-    
-    func didSelectDate(_ date: Date) {
-        URLManager.shared.selectedDate = date
-        let dateString = DateProvider().formatDate(with: date, by: .viewTitle)
-        self.navigationItem.title = "\(dateString)"
-        self.callAPIManager()
     }
     
     private func registerCustomCell() {
@@ -200,6 +198,13 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pushMovieDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieDetailViewController") else { return }
         
+        self.delegate = pushMovieDetailVC as? testable
+        
+        if let boxOfficeData = boxOffice {
+            let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
+            delegate?.configureMovieCode(to: dailyBoxOffice.movieCode)
+        }
+        
         self.navigationController?.pushViewController(pushMovieDetailVC, animated: true)
     }
 }
@@ -231,5 +236,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         } else {
             return 1
         }
+    }
+}
+
+extension MainViewController: CalendarViewControllerDelegate {
+    func didSelectDate(_ date: Date) {
+        URLManager.shared.selectedDate = date
+        let dateString = DateProvider().formatDate(with: date, by: .viewTitle)
+        self.navigationItem.title = "\(dateString)"
+        self.callAPIManager()
     }
 }

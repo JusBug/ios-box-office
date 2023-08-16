@@ -19,9 +19,9 @@ final class CollectionViewListCell: UICollectionViewListCell {
     
     func configureFont() {
         rankNumberLabel.font = .preferredFont(forTextStyle: .title1)
-        rankInfoLabel.font = .preferredFont(forTextStyle: .caption1)
+        rankInfoLabel.font = .preferredFont(forTextStyle: .body)
         movieNameLabel.font = .preferredFont(forTextStyle: .title3)
-        audiNumberLabel.font = .preferredFont(forTextStyle: .caption1)
+        audiNumberLabel.font = .preferredFont(forTextStyle: .body)
     }
     
     func configureDynamicType() {
