@@ -229,6 +229,7 @@ extension MainViewController: UICollectionViewDelegate {
         if let boxOfficeData = boxOffice {
             let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
             movieCodeDelegate?.configureMovieCode(to: dailyBoxOffice.movieCode)
+            pushMovieDetailVC.navigationItem.title = dailyBoxOffice.movieName
         }
         
         self.navigationController?.pushViewController(pushMovieDetailVC, animated: true)

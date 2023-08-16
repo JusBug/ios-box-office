@@ -69,13 +69,13 @@ struct Directors: Decodable {
 
 struct Actors: Decodable {
     let peopleNm: String
-    let poepleNmEn: String
+    let peopleNmEn: String
     let castNm: String
     let castNmEn: String
     
     private enum CodingKeys: String, CodingKey {
         case peopleNm
-        case poepleNmEn
+        case peopleNmEn
         case castNm = "cast"
         case castNmEn = "castEn"
     }
@@ -87,13 +87,13 @@ struct ShowTypes: Decodable {
 }
 
 struct Companys: Decodable {
-    let companyCd: String
+    let companyCode: String
     let companyNm: String
     let companyNmEn: String
     let companyPartNm: String
     
     private enum CodingKeys: String, CodingKey {
-        case companyCd = "companyCode"
+        case companyCode = "companyCd"
         case companyNm
         case companyNmEn
         case companyPartNm

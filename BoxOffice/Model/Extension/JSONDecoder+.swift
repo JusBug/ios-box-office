@@ -13,6 +13,7 @@ extension JSONDecoder {
             let decodedData = try self.decode(T.self, from: data)
             return decodedData
         } catch {
+            print(error)
             return nil
         }
     }

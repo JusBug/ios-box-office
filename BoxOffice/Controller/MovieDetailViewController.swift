@@ -30,26 +30,56 @@ final class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        callAPIManager()
     }
     
-    func configureMovieDetailInfo() {
-      //  movieDetailInfo = MovieDetailInfo(movie: movie)
+    private func configureMovieDetailInfo() {
+        guard let movie else {
+            return
+        }
+        
+        movieDetailInfo = MovieDetailInfo(movie: movie)
+    }
+    
+    private func configureMovieInfoLabels() {
+        guard let movieInfo = movieDetailInfo else {
+            return
+        }
+        
+        let detailsInfo = movieInfo.getDetailInfo()
+        
+        for index in movieInfoLabels.indices {
+            movieInfoLabels[index].text = detailsInfo[index]
+        }
     }
     
     private func callAPIManager() {
-//        APIManager().fetchData(service: ) { result in
-//            let jsonDecoder = JSONDecoder()
-//            switch result {
-//            case .success(let data):
-//                if let decodedData: Movie = jsonDecoder.decodeJSON(data: data) {
-//                    self.movie = decodedData
-//                } else {
-//                    print("Decoding Error")
-//                }
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+        let apiManager = APIManager()
+        
+        guard let movieCode else {
+            return // 추후 메서드 분리후 에러처리
+        }
+        
+        let urlRequiredQuery = apiManager.configureURLRequiredQuery(api: .movieDetailInfo, item: movieCode)
+        let url = apiManager.configureURLSession(service: .movieDetailInfo, requiredQuery: urlRequiredQuery, queryitems: nil)
+        
+        apiManager.fetchData(url: url) { result in
+            let jsonDecoder = JSONDecoder()
+            switch result {
+            case .success(let data):
+                if let decodedData: Movie = jsonDecoder.decodeJSON(data: data) {
+                    self.movie = decodedData
+                    self.configureMovieDetailInfo()
+                    DispatchQueue.main.async {
+                        self.configureMovieInfoLabels()
+                    }
+                } else {
+                    print("Decoding Error")
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
