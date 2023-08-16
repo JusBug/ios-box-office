@@ -13,6 +13,8 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
     @IBOutlet weak var calendarButton: UIButton!
     @IBOutlet weak var changeModeButton: UIButton!
     var boxOffice: BoxOffice?
+    var movie: Movie?
+    
     var isIconMode: Bool = false {
         willSet(newVal){
            changeLayout(newValue: newVal)
@@ -24,7 +26,7 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
         showLodingView()
         assignDataSourceAndDelegate()
         registerCustomCell()
-        callAPIManager()
+        callAPIManager(.dailyBoxOffice)
         configureListLayout()
         configureTitle()
         initRefresh()
@@ -117,7 +119,7 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
         URLManager.shared.selectedDate = date
         let dateString = DateProvider().formatDate(with: date, by: .viewTitle)
         self.navigationItem.title = "\(dateString)"
-        self.callAPIManager()
+        self.callAPIManager(.dailyBoxOffice)
     }
     
     private func registerCustomCell() {
@@ -128,7 +130,7 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
     }
     
     @objc private func updateData() {
-        callAPIManager()
+        callAPIManager(.dailyBoxOffice)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: Notification.Name("completed"), object: nil)
     }
     
@@ -140,11 +142,11 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
         }
     }
     
-    private func callAPIManager() {
-        APIManager().fetchData(service: .dailyBoxOffice) { result in
+    private func callAPIManager(_ service: APIService) {
+        APIManager().fetchData(service: service) { result in
             let jsonDecoder = JSONDecoder()
-            switch result {
-            case .success(let data):
+            switch (service, result) {
+            case (.dailyBoxOffice, .success(let data)):
                 if let decodedData: BoxOffice = jsonDecoder.decodeJSON(data: data) {
                     self.boxOffice = decodedData
                     DispatchQueue.main.async {
@@ -154,7 +156,16 @@ class MainViewController: UIViewController, CalendarViewControllerDelegate {
                 } else {
                     print("Decoding Error")
                 }
-            case .failure(let error):
+            case (.movieDetailInfo, .success(let data)):
+                if let decodedData: Movie = jsonDecoder.decodeJSON(data: data) {
+                    self.movie = decodedData
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                } else {
+                    print("Decoding Error")
+                }
+            case (-, .failure(let error)):
                 print(error)
             }
             
