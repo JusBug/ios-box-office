@@ -53,7 +53,7 @@ final class MovieDetailViewController: UIViewController {
     }
 }
 
-extension MovieDetailViewController: testable {
+extension MovieDetailViewController: MovieCodeable {
     func configureMovieCode(to movieCode: String) {
         self.movieCode = movieCode
     }

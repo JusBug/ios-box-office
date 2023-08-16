@@ -26,8 +26,7 @@ struct APIManager {
         return urlRequiredQuery
     }
     
-    func configureURLSession(service: APIService,
-                             requiredQuery: [URLQueryItem],
+    func configureURLSession(service: APIService, requiredQuery: [URLQueryItem],
                              queryitems: [URLQueryItem]?) -> URL? {
         var urlComponents = URLComponents(string: service.urlBase)
         

@@ -7,25 +7,26 @@
 
 import UIKit
 
-protocol testable {
-    func configureMovieCode(to movieCode: String)
-}
-
 final class MainViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loadingActivityView: UIActivityIndicatorView!
     @IBOutlet weak var calendarButton: UIButton!
     @IBOutlet weak var changeModeButton: UIButton!
-    var boxOffice: BoxOffice?
-    var isIconMode: Bool = false {
+    
+    private var boxOffice: BoxOffice?
+    private var selectedDate: Date?
+    private var alertDelegate: AlertProtocol?
+    var selectedDateDelegate: SelectedDateable?
+    var movieCodeDelegate: MovieCodeable?
+    private var isIconMode: Bool = false {
         willSet(newVal){
            changeLayout(newValue: newVal)
         }
     }
-    var delegate: testable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertDelegate = self
         showLodingView()
         assignDataSourceAndDelegate()
         registerCustomCell()
@@ -62,8 +63,13 @@ final class MainViewController: UIViewController {
     }
     
     @IBAction func tabCalendarButton(_ sender: UIButton) {
-        let calendarVC = CalendarViewController(selectedDate: URLManager.shared.selectedDate, delegate: self)
+        let calendarVC = CalendarViewController()
+        calendarVC.delegate = self
         calendarVC.modalPresentationStyle = .popover
+        
+        selectedDateDelegate = calendarVC
+        selectedDateDelegate?.reciveSelectedDate(date: selectedDate)
+        
         self.present(calendarVC, animated: true, completion: nil)
     }
     
@@ -111,11 +117,7 @@ final class MainViewController: UIViewController {
     }
     
     private func configureTitle() {
-        guard let yesterday = DateProvider().updateDate(to: -1, by: .viewTitle) else {
-            return
-        }
-        
-        self.navigationItem.title = "\(yesterday)"
+        self.navigationItem.title = reciveYesterday(dateForm: .viewTitle)
     }
     
     private func registerCustomCell() {
@@ -138,8 +140,32 @@ final class MainViewController: UIViewController {
         }
     }
     
+    private func reciveYesterday(dateForm: DateForm) -> String {
+        do {
+            return try DateProvider().updateDateString(to: -1, by: dateForm)
+        } catch DateProviderError.wrongDate {
+            alertDelegate?.showAlert(message: "날짜를 받아오는데 실패했습니다.")
+            return ""
+        } catch {
+            alertDelegate?.showAlert(message: "날짜를 받아오는중 알 수 없는 에러가 발생했습니다.")
+            return ""
+        }
+    }
+    
     private func callAPIManager() {
-        APIManager().fetchData(service: .dailyBoxOffice) { result in
+        let apiManager = APIManager()
+        var targetDate: String
+        
+        if let date = selectedDate {
+            targetDate = DateProvider().formatDate(with: date, by: .urlDate)
+        } else {
+            targetDate = reciveYesterday(dateForm: .urlDate)
+        }
+        
+        let urlRequiredQuery = apiManager.configureURLRequiredQuery(api: .dailyBoxOffice, item: targetDate)
+        let url = apiManager.configureURLSession(service: .dailyBoxOffice, requiredQuery: urlRequiredQuery, queryitems: nil)
+        
+        apiManager.fetchData(url: url) { result in
             let jsonDecoder = JSONDecoder()
             switch result {
             case .success(let data):
@@ -198,11 +224,11 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pushMovieDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieDetailViewController") else { return }
         
-        self.delegate = pushMovieDetailVC as? testable
+        self.movieCodeDelegate = pushMovieDetailVC as? MovieCodeable
         
         if let boxOfficeData = boxOffice {
             let dailyBoxOffice = boxOfficeData.boxOfficeResult.dailyBoxOfficeList[indexPath.item]
-            delegate?.configureMovieCode(to: dailyBoxOffice.movieCode)
+            movieCodeDelegate?.configureMovieCode(to: dailyBoxOffice.movieCode)
         }
         
         self.navigationController?.pushViewController(pushMovieDetailVC, animated: true)
@@ -241,9 +267,23 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainViewController: CalendarViewControllerDelegate {
     func didSelectDate(_ date: Date) {
-        URLManager.shared.selectedDate = date
         let dateString = DateProvider().formatDate(with: date, by: .viewTitle)
         self.navigationItem.title = "\(dateString)"
+        self.selectedDate = date
         self.callAPIManager()
+    }
+}
+
+extension MainViewController: AlertProtocol {
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let confirmAction: UIAlertAction = UIAlertAction(
+            title: "확인",
+            style: .default) {
+                _ in exit(0)
+            }
+        
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
     }
 }

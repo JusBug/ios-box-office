@@ -12,16 +12,6 @@ final class CalendarViewController: UIViewController {
     var selectedDate: Date?
     weak var delegate: CalendarViewControllerDelegate?
     
-    init(selectedDate: Date?, delegate: CalendarViewControllerDelegate?) {
-        self.selectedDate = selectedDate
-        self.delegate = delegate
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCalendar()
@@ -70,5 +60,11 @@ extension CalendarViewController: UICalendarSelectionSingleDateDelegate, UICalen
         } else {
             print("unselected Error")
         }
+    }
+}
+
+extension CalendarViewController: SelectedDateable {
+    func reciveSelectedDate(date: Date?) {
+        self.selectedDate = date
     }
 }

@@ -35,17 +35,6 @@ enum APIService {
         }
     }
     
-//    var urlPath: String {
-//        switch self {
-//        case .dailyBoxOffice:
-//            return "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
-//        case .movieDetailInfo:
-//            return "/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"
-//        case .movieImage:
-//            return "/v2/search/image"
-//        }
-//    }
-    
     var urlKey: String {
         switch self {
         case .dailyBoxOffice, .movieDetailInfo:
