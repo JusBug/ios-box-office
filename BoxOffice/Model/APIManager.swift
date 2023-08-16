@@ -8,10 +8,52 @@
 import Foundation
 
 struct APIManager {
-    func fetchData(service: APIService, completion: @escaping (Result<Data, Error>) -> Void) {
+    func configureURLRequiredQuery(api: APIService, item: String) -> [URLQueryItem] {
+        var urlRequiredQuery: [URLQueryItem] {
+            switch api {
+            case .dailyBoxOffice:
+                return [URLQueryItem(name: "key", value: api.urlKey),
+                        URLQueryItem(name: "targetDt", value: item)]
+            case .movieDetailInfo:
+                return [URLQueryItem(name: "key", value: api.urlKey),
+                        URLQueryItem(name: "movieCd", value: item)]
+            case .movieImage:
+                return [URLQueryItem(name: "key", value: api.urlKey),
+                        URLQueryItem(name: "query", value: item)]
+            }
+        }
+        
+        return urlRequiredQuery
+    }
+    
+    func configureURLSession(service: APIService,
+                             requiredQuery: [URLQueryItem],
+                             queryitems: [URLQueryItem]?) -> URL? {
+        var urlComponents = URLComponents(string: service.urlBase)
+        
+        urlComponents?.queryItems = requiredQuery
+        
+        if let queryitems = queryitems {
+            queryitems.forEach {
+                urlComponents?.queryItems?.append($0)
+            }
+        }
+        
+        return urlComponents?.url
+    }
+    
+    func configureURLquery(items: Dictionary<String, String>) -> [URLQueryItem] {
+        var queryItem = items.map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        }
+        
+        return queryItem
+    }
+    
+    func fetchData(url: URL?, completion: @escaping (Result<Data, Error>) -> Void) {
         let session = URLSession.shared
         
-        guard let url = service.url else {
+        guard let url = url else {
             print("Wrong URL")
             completion(.failure(APIError.wrongURL))
             return

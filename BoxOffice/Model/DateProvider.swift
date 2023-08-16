@@ -10,17 +10,10 @@ import Foundation
 struct DateProvider {
     typealias NumberOfDays = Int
     
-    func updateDate(with date: Date = Date(), to numberOfDays: NumberOfDays, by form: DateForm) -> String? {
-        do {
-            let reciveDate = try reciveDate(to: numberOfDays, from: date)
-            return formatDate(with: reciveDate, by: form)
-        } catch DateProviderError.wrongDate {
-            print("wrongDateError")
-        } catch {
-            print("unknown Error in reciveDate()")
-        }
+    func updateDateString(with date: Date = Date(), to numberOfDays: NumberOfDays, by form: DateForm) throws -> String {
+        let reciveDate = try reciveDate(to: numberOfDays, from: date)
         
-        return nil
+        return formatDate(with: reciveDate, by: form)
     }
     
     func formatDate(with date: Date, by form: DateForm) -> String {
