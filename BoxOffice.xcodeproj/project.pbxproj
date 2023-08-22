@@ -33,6 +33,7 @@
 		D0989F8A2A7B522400716556 /* HideAPIKey++Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0989F892A7B522400716556 /* HideAPIKey++Bundle.swift */; };
 		D0F060152A8C96DF006133E4 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F060142A8C96DF006133E4 /* Arrow.swift */; };
 		D0F0605D2A949FA2006133E4 /* MovieDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F0605C2A949FA2006133E4 /* MovieDetailInfo.swift */; };
+		D0F0605F2A94DC8C006133E4 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F0605E2A94DC8C006133E4 /* MovieDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		D0989F892A7B522400716556 /* HideAPIKey++Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HideAPIKey++Bundle.swift"; sourceTree = "<group>"; };
 		D0F060142A8C96DF006133E4 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		D0F0605C2A949FA2006133E4 /* MovieDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailInfo.swift; sourceTree = "<group>"; };
+		D0F0605E2A94DC8C006133E4 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				D0F060162A8C9782006133E4 /* Enum */,
 				D0246A132A81E4B70045C0B6 /* Protocol+ */,
 				63DF20F22970E1A0005DF7D1 /* MainViewController.swift */,
+				D0F0605E2A94DC8C006133E4 /* MovieDetailViewController.swift */,
 				D0246A0F2A81DDC50045C0B6 /* CalendarViewController.swift */,
 				5DDFC3592A79FBEB00135954 /* CollectionViewListCell.swift */,
 				5D2CF6C72A8B6F0A009EECB3 /* CollectionViewIconCell.swift */,
@@ -368,6 +371,7 @@
 				D06DF2812A6E73B40074F9EF /* BoxOffice.swift in Sources */,
 				D0246A102A81DDC50045C0B6 /* CalendarViewController.swift in Sources */,
 				63DF20F32970E1A0005DF7D1 /* MainViewController.swift in Sources */,
+				D0F0605F2A94DC8C006133E4 /* MovieDetailViewController.swift in Sources */,
 				D0F060152A8C96DF006133E4 /* Arrow.swift in Sources */,
 				63DF20EF2970E1A0005DF7D1 /* AppDelegate.swift in Sources */,
 				D0F0605D2A949FA2006133E4 /* MovieDetailInfo.swift in Sources */,
